@@ -38,7 +38,7 @@ async function createWidget(items) {
   w.backgroundImage = img
   w.backgroundColor = bg
   w.backgroundGradient = gradient
-  w.url = 'https://www.youtube.com/channel/UCaeTwbBs3tezU9MUi25z5MQ'
+  w.url = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}`
 
   const titleFontSize = 12
   const detailFontSize = 25
