@@ -15,8 +15,7 @@ There are some variables at the top of the file that you will want to change.
 const YOUTUBE_CHANNEL_ID = 'your_channel_id' // required
 const YOUTUBE_API_KEY = 'your_API_key' // required
 const SHOW_CHANNEL_TITLE = true
-const DARK_BG_COLOUR = '#000000'
-const LIGHT_BG_COLOUR = '#b00a0f'
+const BG_COLOUR = '#ff0000' // Youtube Red
 ```
 
 - `YOUTUBE_CHANNEL_ID` is the ID of the channel you want to display information about. You can find it from the url of the channel, e.g. for this channel: `https://www.youtube.com/channel/UCaeTwbBs3tezU9MUi25z5MQ`, `UCaeTwbBs3tezU9MUi25z5MQ` is the channel ID.
@@ -33,10 +32,6 @@ This widget show both your channel subscriber count and total video views. Tappi
 
 #### Small
 
-<img src="small.png" width="200" />
-
-#### Medium and large
-
-<img src="medium-large.png" width="450" />
+<img src="small.jpg" width="200" />
 
 ## Subscribers

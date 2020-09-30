@@ -7,29 +7,24 @@
  */
 const YOUTUBE_CHANNEL_ID = 'your_channel_id'
 const YOUTUBE_API_KEY = 'your_API_key'
-const SHOW_CHANNEL_TITLE = true
-const DARK_BG_COLOUR = '#000000'
-const LIGHT_BG_COLOUR = '#b00a0f'
+const SHOW_CHANNEL_TITLE = false
+const BG_COLOUR = '#ff0000'
 
 let items = await fetchStats()
 let widget = await createWidget(items)
 
-// Check if the script is running in
-// a widget. If not, show a preview of
+// Check if the script is running in a widget. If not, show a preview of
 // the widget to easier debug it.
 if (!config.runsInWidget) {
-  await widget.presentMedium()
+  await widget.presentSmall()
 }
+
 // Tell the system to show the widget.
 Script.setWidget(widget)
 Script.complete()
 
 async function createWidget(items) {
-  const isDarkMode = await isUsingDarkAppearance()
-  const gradientBg = isDarkMode
-    ? [new Color(`${DARK_BG_COLOUR}40`), new Color(`${DARK_BG_COLOUR}CC`)]
-    : [new Color(`${LIGHT_BG_COLOUR}40`), new Color(`${LIGHT_BG_COLOUR}CC`)]
-  const bg = isDarkMode ? new Color(DARK_BG_COLOUR) : new Color(LIGHT_BG_COLOUR)
+  const bg = new Color(BG_COLOUR)
 
   let item = items[0]
   const imgReq = await new Request(item.snippet.thumbnails.high.url)
@@ -37,38 +32,43 @@ async function createWidget(items) {
   const title = item.snippet.title
   const statistics = item.statistics
   const { subscriberCount } = statistics
-  let gradient = new LinearGradient()
-  gradient.locations = [0, 1]
-  gradient.colors = gradientBg
+
   let w = new ListWidget()
-  w.backgroundImage = img
+  w.useDefaultPadding()
   w.backgroundColor = bg
-  w.backgroundGradient = gradient
   w.url = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}`
 
   const titleFontSize = 12
-  const detailFontSize = 60
+  const detailFontSize = 50
 
-  if (SHOW_CHANNEL_TITLE) {
-    // Show channel name
-    let titleTxt = w.addText(title)
-    titleTxt.font = Font.heavySystemFont(16)
-    titleTxt.textColor = Color.white()
-    w.addSpacer(8)
-  } else {
-    w.addSpacer()
-  }
+  let row = w.addStack()
+  row.layoutHorizontally()
+  row.addSpacer()
+  let wimg = row.addImage(img)
+  wimg.imageSize = new Size(40, 40)
+  wimg.cornerRadius = 4
+
+  w.addSpacer()
 
   // Show subscriber count
   let subscribersCount = w.addText(formatNumber(subscriberCount))
   subscribersCount.font = Font.ultraLightSystemFont(detailFontSize)
   subscribersCount.textColor = Color.white()
   subscribersCount.textOpacity = 0.9
+  // w.addSpacer(-8)
 
   let subscribersText = w.addText(`SUBSCRIBERS`)
   subscribersText.font = Font.mediumSystemFont(titleFontSize)
   subscribersText.textColor = Color.white()
   subscribersText.textOpacity = 0.9
+
+  if (SHOW_CHANNEL_TITLE) {
+    // Show channel name
+    w.addSpacer(2)
+    let titleTxt = w.addText(title)
+    titleTxt.font = Font.heavySystemFont(titleFontSize)
+    titleTxt.textColor = Color.white()
+  }
 
   return w
 }
@@ -80,17 +80,26 @@ async function fetchStats() {
   return json.items
 }
 
-async function isUsingDarkAppearance() {
-  const wv = new WebView()
-  let js =
-    "(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)"
-  let r = await wv.evaluateJavaScript(js)
-  return r
-}
-
-function formatNumber(number) {
-  return Intl.NumberFormat('en-US', {
-    notation: 'compact',
-    compactDisplay: 'short',
-  }).format(number)
+function formatNumber(value) {
+  var newValue = value
+  if (value >= 1000) {
+    var suffixes = ['', 'k', 'm', 'b', 't']
+    var suffixNum = Math.floor(('' + value).length / 3)
+    var shortValue = ''
+    for (var precision = 2; precision >= 1; precision--) {
+      shortValue = parseFloat(
+        (suffixNum != 0
+          ? value / Math.pow(1000, suffixNum)
+          : value
+        ).toPrecision(precision)
+      )
+      var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '')
+      if (dotLessShortValue.length <= 2) {
+        break
+      }
+    }
+    if (shortValue % 1 != 0) shortValue = shortValue.toFixed(1)
+    newValue = shortValue + suffixes[suffixNum]
+  }
+  return newValue
 }
