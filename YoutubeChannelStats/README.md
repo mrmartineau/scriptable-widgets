@@ -2,8 +2,6 @@
 
 These widgets display information about a Youtube channel.
 
-> You will need to create your own
-
 ### Widget configuration
 
 There are some variables at the top of the file that you will want to change.
@@ -24,14 +22,25 @@ const BG_COLOUR = '#ff0000' // Youtube Red
 - Set `DARK_BG_COLOUR` to change the background gradient when your phone is in dark mode
 - Set `LIGHT_BG_COLOUR` to change the background gradient when your phone is in light mode
 
-## Subscribers and total views
+## Subscribers
 
 File: `YoutubeChannelSubs+views.js`
 
 This widget show both your channel subscriber count and total video views. Tapping on the widget will navigate to that Youtube channel.
 
-#### Small
-
 <img src="small.jpg" width="200" />
 
-## Subscribers
+The count display is formatted so that values with be abbreviated, like so:
+
+- Count: `62`. Display: `62`
+- Count: `623`. Display: `623`
+- Count: `6230`. Display: `6.2k`
+- Count: `62300`. Display: `62.3k`
+- Count: `623000`. Display: `623k`
+- Count: `6230000`. Display: `6.2m`
+- Count: `62300000`. Display: `623m`
+- Count: `623000000`. Display: `6.2b`
+
+Here's an example for a Youtube channel with over 5 million subscribers.
+
+<img src="small-alt.jpg" width="200" />
