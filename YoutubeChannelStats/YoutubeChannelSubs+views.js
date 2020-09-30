@@ -2,8 +2,14 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: red; icon-glyph: video;
 
-const YOUTUBE_CHANNEL_ID = 'UCaeTwbBs3tezU9MUi25z5MQ'
-const YOUTUBE_API_KEY = args.widgetParameter
+/**
+ * WIDGET CONFIGURATION
+ */
+const YOUTUBE_CHANNEL_ID = 'your_channel_id'
+const YOUTUBE_API_KEY = 'your_API_key'
+const SHOW_CHANNEL_TITLE = true
+const DARK_BG_COLOUR = '#000000'
+const LIGHT_BG_COLOUR = '#b00a0f'
 
 let items = await fetchStats()
 let widget = await createWidget(items)
@@ -19,11 +25,11 @@ Script.setWidget(widget)
 Script.complete()
 
 async function createWidget(items) {
-  const isDarkMode = Device.isUsingDarkAppearance()
+  const isDarkMode = await isUsingDarkAppearance()
   const gradientBg = isDarkMode
-    ? [new Color('#000000e6'), new Color('#000000b3')]
-    : [new Color('#b00a0fe6'), new Color('#b00a0fb3')]
-  const bg = isDarkMode ? new Color('#000000') : new Color('#b00a0f')
+    ? [new Color(`${DARK_BG_COLOUR}40`), new Color(`${DARK_BG_COLOUR}CC`)]
+    : [new Color(`${LIGHT_BG_COLOUR}40`), new Color(`${LIGHT_BG_COLOUR}CC`)]
+  const bg = isDarkMode ? new Color(DARK_BG_COLOUR) : new Color(LIGHT_BG_COLOUR)
 
   let item = items[0]
   const imgReq = await new Request(item.snippet.thumbnails.high.url)
@@ -42,11 +48,16 @@ async function createWidget(items) {
 
   const titleFontSize = 12
   const detailFontSize = 25
-  // Show channel name
-  let titleTxt = w.addText(title)
-  titleTxt.font = Font.heavySystemFont(16)
-  titleTxt.textColor = Color.white()
-  w.addSpacer(8)
+
+  if (SHOW_CHANNEL_TITLE) {
+    // Show channel name
+    let titleTxt = w.addText(title)
+    titleTxt.font = Font.heavySystemFont(16)
+    titleTxt.textColor = Color.white()
+    w.addSpacer(8)
+  } else {
+    w.addSpacer()
+  }
 
   // Show subscriber count
   let subscribersText = w.addText(`SUBSCRIBERS`)
@@ -55,7 +66,7 @@ async function createWidget(items) {
   subscribersText.textOpacity = 0.9
   w.addSpacer(2)
 
-  let subscribersCount = w.addText(subscriberCount)
+  let subscribersCount = w.addText(formatNumber(subscriberCount))
   subscribersCount.font = Font.heavySystemFont(detailFontSize)
   subscribersCount.textColor = Color.white()
   subscribersCount.textOpacity = 0.9
@@ -68,7 +79,7 @@ async function createWidget(items) {
   viewsText.textOpacity = 0.9
   w.addSpacer(2)
 
-  let viewsCount = w.addText(viewCount)
+  let viewsCount = w.addText(formatNumber(viewCount))
   viewsCount.font = Font.heavySystemFont(detailFontSize)
   viewsCount.textColor = Color.white()
   viewsCount.textOpacity = 0.9
@@ -81,4 +92,19 @@ async function fetchStats() {
   let req = new Request(url)
   let json = await req.loadJSON()
   return json.items
+}
+
+async function isUsingDarkAppearance() {
+  const wv = new WebView()
+  let js =
+    "(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)"
+  let r = await wv.evaluateJavaScript(js)
+  return r
+}
+
+function formatNumber(number) {
+  return Intl.NumberFormat('en-US', {
+    notation: 'compact',
+    compactDisplay: 'short',
+  }).format(number)
 }
