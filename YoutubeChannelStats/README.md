@@ -22,13 +22,19 @@ const BG_COLOUR = '#ff0000' // Youtube Red
 - Set `DARK_BG_COLOUR` to change the background gradient when your phone is in dark mode
 - Set `LIGHT_BG_COLOUR` to change the background gradient when your phone is in light mode
 
-## Subscribers
+## Subscribers count
 
-File: `YoutubeChannelSubs+views.js`
+File: `YoutubeChannelSubs.js`
 
 This widget show both your channel subscriber count and total video views. Tapping on the widget will navigate to that Youtube channel.
 
-<img src="small.jpg" width="200" />
+### 2 x 2
+
+<img src="subs-small.jpg" width="200" />
+
+### 4 x 2
+
+<img src="subs-wide.jpg" width="400" />
 
 The count display is formatted so that values with be abbreviated, like so:
 
@@ -41,6 +47,14 @@ The count display is formatted so that values with be abbreviated, like so:
 - Count: `62300000`. Display: `623m`
 - Count: `623000000`. Display: `6.2b`
 
-Here's an example for a Youtube channel with over 5 million subscribers.
+Here's an example for a Youtube channel with over 4 million subscribers.
 
-<img src="small-alt.jpg" width="200" />
+<img src="subs-small-alt.jpg" width="200" />
+
+## Recent video statistics
+
+File `YoutubeChannelStats.js`
+
+This widget shows the like and view counts for your 3 most recent uploads to your channel. It works best as the largest of the widget sizes.
+
+<img src="stats-big.jpg" width="400" />

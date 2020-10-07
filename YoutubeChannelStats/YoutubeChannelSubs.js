@@ -8,64 +8,72 @@
 const YOUTUBE_CHANNEL_ID = 'your_channel_id'
 const YOUTUBE_API_KEY = 'your_API_key'
 const SHOW_CHANNEL_TITLE = false
-const BG_COLOUR = '#ff0000'
+const LIGHT_BG_COLOUR = '#ff0000'
+const DARK_BG_COLOUR = '#9E0000'
 
-let items = await fetchStats()
-let widget = await createWidget(items)
+const items = await fetch()
+const widget = await createWidget(items)
 
-// Check if the script is running in a widget. If not, show a preview of
+// Check if the script is running in
+// a widget. If not, show a preview of
 // the widget to easier debug it.
 if (!config.runsInWidget) {
   await widget.presentSmall()
 }
-
 // Tell the system to show the widget.
 Script.setWidget(widget)
 Script.complete()
 
 async function createWidget(items) {
-  const bg = new Color(BG_COLOUR)
-
-  let item = items[0]
+  const item = items[0]
+  const gradientBg = [
+    new Color(`${LIGHT_BG_COLOUR}D9`),
+    new Color(`${DARK_BG_COLOUR}D9`),
+  ]
+  const gradient = new LinearGradient()
+  gradient.locations = [0, 1]
+  gradient.colors = gradientBg
+  const bg = new Color(LIGHT_BG_COLOUR)
   const imgReq = await new Request(item.snippet.thumbnails.high.url)
   const img = await imgReq.loadImage()
+  const logoReq = await new Request('https://i.imgur.com/mRURHE5.png')
+  const logoImg = await logoReq.loadImage()
+
   const title = item.snippet.title
   const statistics = item.statistics
   const { subscriberCount } = statistics
 
-  let w = new ListWidget()
+  const w = new ListWidget()
   w.useDefaultPadding()
+  w.backgroundImage = img
   w.backgroundColor = bg
+  w.backgroundGradient = gradient
   w.url = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}`
 
   const titleFontSize = 12
   const detailFontSize = 50
 
-  let row = w.addStack()
+  const row = w.addStack()
   row.layoutHorizontally()
   row.addSpacer()
-  let wimg = row.addImage(img)
-  wimg.imageSize = new Size(40, 40)
-  wimg.cornerRadius = 4
+  const wimg = row.addImage(logoImg)
+  wimg.imageSize = new Size(30, 25)
 
   w.addSpacer()
 
   // Show subscriber count
-  let subscribersCount = w.addText(formatNumber(subscriberCount))
-  subscribersCount.font = Font.ultraLightSystemFont(detailFontSize)
+  const subscribersCount = w.addText(formatNumber(subscriberCount))
+  subscribersCount.font = Font.mediumRoundedSystemFont(detailFontSize)
   subscribersCount.textColor = Color.white()
-  subscribersCount.textOpacity = 0.9
-  // w.addSpacer(-8)
 
-  let subscribersText = w.addText(`SUBSCRIBERS`)
-  subscribersText.font = Font.mediumSystemFont(titleFontSize)
+  const subscribersText = w.addText(`SUBSCRIBERS`)
+  subscribersText.font = Font.regularSystemFont(titleFontSize)
   subscribersText.textColor = Color.white()
-  subscribersText.textOpacity = 0.9
 
   if (SHOW_CHANNEL_TITLE) {
     // Show channel name
     w.addSpacer(2)
-    let titleTxt = w.addText(title)
+    const titleTxt = w.addText(title)
     titleTxt.font = Font.heavySystemFont(titleFontSize)
     titleTxt.textColor = Color.white()
   }
@@ -73,10 +81,10 @@ async function createWidget(items) {
   return w
 }
 
-async function fetchStats() {
+async function fetch() {
   const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}&part=contentDetails&part=contentOwnerDetails&part=topicDetails&part=snippet`
-  let req = new Request(url)
-  let json = await req.loadJSON()
+  const req = new Request(url)
+  const json = await req.loadJSON()
   return json.items
 }
 
