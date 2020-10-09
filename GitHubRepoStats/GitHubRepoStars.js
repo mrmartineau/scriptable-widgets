@@ -74,7 +74,6 @@ async function fetch() {
 }
 
 function formatNumber(value) {
-  console.log(value)
   var length = (value + '').length,
     index = Math.ceil((length - 3) / 3),
     suffix = ['k', 'm', 'b', 't']
