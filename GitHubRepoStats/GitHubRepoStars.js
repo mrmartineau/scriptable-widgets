@@ -31,7 +31,7 @@ async function createWidget({ name, stars, url }) {
   gradient.locations = [0, 1]
   gradient.colors = gradientBg
   const bg = new Color(DARK_BG_COLOUR)
-  const logoReq = await new Request('https://i.imgur.com/MJzROGa.padding: ')
+  const logoReq = await new Request('https://i.imgur.com/MJzROGa.png')
   const logoImg = await logoReq.loadImage()
 
   const w = new ListWidget()
