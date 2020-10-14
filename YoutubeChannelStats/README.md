@@ -28,11 +28,11 @@ File: `YoutubeChannelSubs.js`
 
 This widget show both your channel subscriber count and total video views. Tapping on the widget will navigate to that Youtube channel.
 
-### 2 x 2
+### Small
 
 <img src="subs-small.jpg" width="200" />
 
-### 4 x 2
+### Medium
 
 <img src="subs-wide.jpg" width="400" />
 
