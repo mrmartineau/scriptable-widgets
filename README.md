@@ -28,7 +28,9 @@
 
 [More info](/GitHubRepoStats)
 
-[![](GitHubRepoStats/repoStars.jpg)](/GitHubRepoStats)
+<a href="/GitHubRepoStats">
+  <img src="GitHubRepoStats/repoStars.jpg" width="400" />
+</a>
 
 # Instapaper: Unread
 
