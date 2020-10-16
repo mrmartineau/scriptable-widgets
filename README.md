@@ -24,6 +24,8 @@
   </p>
 </div>
 
+This is a collection of [Scriptable](https://docs.scriptable.app/) widgets that I've created.
+
 # GitHub repo star count
 
 [More info](/GitHubRepoStats)
@@ -59,3 +61,9 @@ Two different widgets, one for showing your channel subscriber count, and anothe
 <a href="/YoutubeChannelStats">
   <img src="YoutubeChannelStats/stats-big.jpg" width="400" />
 </a>
+
+---
+
+Scriptable Documentation: https://docs.scriptable.app/
+
+Scriptable TestFlight Link: https://testflight.apple.com/join/uN1vTqxk
