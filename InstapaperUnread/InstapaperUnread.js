@@ -38,6 +38,9 @@ async function createWidget(data) {
   w.useDefaultPadding()
   w.backgroundColor = bg
   w.backgroundGradient = gradient
+  if (config.widgetFamily === 'small') {
+    w.url = 'instapaper://'
+  }
 
   const itemFontSize = config.widgetFamily === 'large' ? 15 : 12
 
